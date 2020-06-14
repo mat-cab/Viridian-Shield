@@ -12,6 +12,6 @@ static const int DEBUG_SERIAL_SPEED = 9600;
 
 class debug {
     public:
-        debug();
-        void log(const char* message);
+        static void initialize();
+        static void log(const char* message);
 };

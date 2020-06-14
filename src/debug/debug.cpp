@@ -2,7 +2,7 @@
 
 #include "debug.h"
 
-debug::debug() {
+void debug::initialize() {
     // debug generally only available for MEGA on Serial1
     #ifdef ARDUINO_AVR_MEGA2560
     if (!Serial1) {
