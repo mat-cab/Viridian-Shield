@@ -3,10 +3,10 @@
 #include <Arduino.h>
 
 // Association between options and pins
-#define INPUTS_OPTION_16A_MAX 7
+static const uint8_t INPUTS_OPTION_16A_MAX = 7;
 
 // Association between variables and pins
-#define INPUTS_VARIABLE_MAX_CURRENT 23
+static const uint8_t INPUTS_VARIABLE_MAX_CURRENT = 23;
 
 class inputs {
     public:
