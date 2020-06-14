@@ -8,7 +8,7 @@ void inputs::initialize() {
         pinMode(i, INPUT_PULLUP);
     }
 
-    // set anlog pins to INPUT
+    // set analog pins to INPUT
     pinMode(23, INPUT);
     pinMode(24, INPUT);
 }
@@ -19,5 +19,6 @@ bool inputs::readOption(uint8_t pin) {
 }
 
 int inputs::readVariable(uint8_t pin) {
+    // return the value for the selected pin
     return analogRead(pin);
 }
