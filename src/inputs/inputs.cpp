@@ -10,6 +10,6 @@ void inputs::initialize() {
 }
 
 bool inputs::read(uint8_t pin) {
-    // return not digitalread (because of pullup mode)
-    return !digitalRead(pin);
+    // return digitalread, but inverse because of PULLUP mode
+    return digitalRead(pin)==LOW;
 }
