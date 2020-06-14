@@ -7,9 +7,17 @@ void inputs::initialize() {
     for (uint8_t i = 2; i < 10; i++) {
         pinMode(i, INPUT_PULLUP);
     }
+
+    // set anlog pins to INPUT
+    pinMode(23, INPUT);
+    pinMode(24, INPUT);
 }
 
-bool inputs::read(uint8_t pin) {
+bool inputs::readOption(uint8_t pin) {
     // return digitalread, but inverse because of PULLUP mode
     return digitalRead(pin)==LOW;
+}
+
+int inputs::readVariable(uint8_t pin) {
+    return analogRead(pin);
 }
