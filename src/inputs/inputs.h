@@ -3,10 +3,10 @@
 #include <Arduino.h>
 
 // Association between options and pins
-static const uint8_t INPUTS_OPTION_16A_MAX = 7;
+// pin 8 is to add 2A to the current margin
+static const uint8_t INPUTS_OPTION_MARGIN_ADD_2A = 8;
 
 // Association between variables and pins
-static const uint8_t INPUTS_VARIABLE_MAX_CURRENT = 23;
 
 class inputs {
     public:
