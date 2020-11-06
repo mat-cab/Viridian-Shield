@@ -5,10 +5,23 @@
 void debug::initialize() {
     // debug generally only available for MEGA on Serial1
     #ifdef ARDUINO_AVR_MEGA2560
+    // Set pins for FTD 1232 on pins 15 to 20:
+    // pin 15 is DTR
+    pinMode(15, INPUT);
+    // pin 16 is RX (on FTD)
+    // pin 17 is TX (on FTD)
+    // pin 18 is VCC
+    pinMode(18, OUTPUT);
+    digitalWrite(18, HIGH);
+    // pin 19 is CTS
+    pinMode(19, INPUT);
+    // pin 20 is GND
+    pinMode(20, OUTPUT);
+    pinMode(20, LOW);
     // Open Serial
-    Serial.begin(DEBUG_SERIAL_SPEED);
+    Serial2.begin(DEBUG_SERIAL_SPEED);
     // Wait for serial to be ready
-    while (!Serial) ;
+    while (!Serial2) ;
     #endif
 
     // possibility to force debug output to Serial on UNO
@@ -27,7 +40,7 @@ void debug::initialize() {
 void debug::log(const String message) {
     // debug generally only available for MEGA on Serial1
     #ifdef ARDUINO_AVR_MEGA2560
-    Serial.println(message);
+    Serial2.println(message);
     #endif
 
     // debug on Uno if forced
