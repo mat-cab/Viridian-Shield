@@ -57,9 +57,6 @@ void loop() {
     // if so, always ask to cut 
     viridian::stopCharging();
 
-    // also reset the ADPS to 0 (otherwise we will never charge again)
-    teleInfo.ADPS = 0;
-
     // log to debug
     debug::log("main: ADPS received, stopped charging");
   } else if (timer::timerAllows()) {
