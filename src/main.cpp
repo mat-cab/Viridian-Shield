@@ -20,6 +20,9 @@ const double MAIN_PERCENTAGE_CHANGE_MINIMUM = 0.1;
 // initial wait time in ms after the setup
 // set to 10s
 const uint32_t MAIN_END_SETUP_WAIT = 10000;
+// main cycle duration in ms
+// set to 1s
+const uint32_t MAIN_LOOP_DURATION = 1000;
 
 // Create the teleInfo Object on pin 0
 teleInfo TI(0);
@@ -97,5 +100,5 @@ void loop() {
   }
 
   // wait a bit for the next cycle
-  delay(1000);
+  delay(MAIN_LOOP_DURATION);
 }
