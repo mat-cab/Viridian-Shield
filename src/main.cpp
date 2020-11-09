@@ -88,6 +88,10 @@ void loop() {
       }
     }
   } else {
+    // log the teleinfo data
+    debug::log("main: Teleinfo ISOUSC: "+String(teleInfo.ISOUSC));
+    debug::log("main: Teleinfo IINST: "+String(teleInfo.IINST));
+
     // simple log message
     debug::log("main: waiting for appropriate time to change charge");
   }
