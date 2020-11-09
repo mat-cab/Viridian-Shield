@@ -25,7 +25,8 @@ class viridian {
         static void stopCharging();
         static double getChargingCurrent();
 
-        static void sendToCar();
     private:
+        static void sendToCar();
+
         static double chargingCurrent;
 };

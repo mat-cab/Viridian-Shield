@@ -8,23 +8,34 @@
 double viridian::chargingCurrent;
 
 void viridian::initialize() {
-    // set the charging current to 0
-    viridian::stopCharging();
-
     // initialize the underlying dac
     dac_MCP4725::initialize();
+    
+    // set the charging current to 0
+    viridian::stopCharging();
 }
 
 void viridian::setChargingCurrent(const double maxAmps) {
+    double newChargingCurrent;
+
     if (maxAmps > VIRIDIAN_MAX_RANGE_AMPS) {
         // if new value is more than max, apply max
-        viridian::chargingCurrent = VIRIDIAN_MAX_RANGE_AMPS;
+        newChargingCurrent = VIRIDIAN_MAX_RANGE_AMPS;
     } else if (maxAmps < VIRIDIAN_MIN_RANGE_AMPS) {
         // if value is less than minimum, just apply 0
-        viridian::chargingCurrent = 0.0;
+        newChargingCurrent = 0.0;
     } else {
         // this is an acceptable value
-        viridian::chargingCurrent = maxAmps;
+        newChargingCurrent = maxAmps;
+    }
+
+    // if this is a new command
+    if (newChargingCurrent != viridian::chargingCurrent) {
+        // save it
+        viridian::chargingCurrent = newChargingCurrent;
+
+        // also send directly the command to the car
+        viridian::sendToCar();
     }
 }
 
@@ -39,7 +50,7 @@ double viridian::getChargingCurrent() {
 void viridian::sendToCar() {
     // special case to stop charging
     if (viridian::chargingCurrent == 0.0) {
-        debug::log("Sending stop command to Viridian");
+        debug::log("viridian: Sending stop command to Viridian");
 
         // just send 0 to the DAC
         dac_MCP4725::write(0);
@@ -50,7 +61,7 @@ void viridian::sendToCar() {
         // value for the DAC
         uint16_t dacValue = ICV * (VIRIDIAN_DAC_MAX_V - VIRIDIAN_DAC_MIN_V) / VIRIDIAN_DAC_MAX_Q;
 
-        debug::log("Sending charging command to Viridian at "+String(viridian::chargingCurrent)+"A, IC equivalent voltage: "+String(ICV)+"V, DAC Value: "+String(dacValue));
+        debug::log("viridian: Sending charging command to Viridian at "+String(viridian::chargingCurrent)+"A, IC equivalent voltage: "+String(ICV)+"V, DAC Value: "+String(dacValue));
 
         // Send the value to the DAC
         dac_MCP4725::write(dacValue);        
