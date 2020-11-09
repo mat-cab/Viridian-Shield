@@ -17,6 +17,9 @@ const uint8_t MAIN_INITIAL_MARGIN = 1;
 const uint8_t MAIN_ADDITIONAL_OPTION_MARGIN = 2;
 // minimum percentage change to apply the new charging current
 const double MAIN_PERCENTAGE_CHANGE_MINIMUM = 0.1;
+// initial wait time in ms after the setup
+// set to 10s
+const uint32_t MAIN_END_SETUP_WAIT = 10000;
 
 // Create the teleInfo Object on pin 0
 teleInfo TI(0);
@@ -37,8 +40,11 @@ void setup() {
   // initialize the timer
   timer::setTimerDuration(MAIN_CHARGE_CYCLE);
 
-  // put your setup code here, to run once:
+  // debug message to know we finished setup
   debug::log("main: Setup finished");
+
+  // just wait a few seconds before going into the loop, in case we just had an overcurrent protection
+  delay(MAIN_END_SETUP_WAIT);
 }
 
 void loop() {
