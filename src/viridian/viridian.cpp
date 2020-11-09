@@ -24,6 +24,8 @@ void viridian::setChargingCurrent(const double maxAmps) {
     } else if (maxAmps < VIRIDIAN_MIN_RANGE_AMPS) {
         // if value is less than minimum, just apply 0
         newChargingCurrent = 0.0;
+        // also log a message
+        debug::log("viridian: Not charging - new charging current is less than minimum of "+String(VIRIDIAN_MIN_RANGE_AMPS)+" Amps");
     } else {
         // this is an acceptable value
         newChargingCurrent = maxAmps;
