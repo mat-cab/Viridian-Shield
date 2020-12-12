@@ -93,16 +93,22 @@ void loop() {
         viridian::setChargingCurrent(availableCurrent);
       }
     } else {
-      // compute the percentage change
-      double percentageChange = availableCurrent / viridian::getChargingCurrent();
+      // check that the availableCurrent is at least one Amp different
+      if ( (availableCurrent - viridian::getChargingCurrent()) < 1.0 || (availableCurrent - viridian::getChargingCurrent()) > -1.0) {
+        // if not, log a message
+        debug::log("main: Change of charging current is less than one amp. Not changing.");
+      }  else {
+        // compute the percentage change
+        double percentageChange = availableCurrent / viridian::getChargingCurrent();
 
-      // if the percentageChange is greater than allowed change
-      if (percentageChange > 1 + MAIN_PERCENTAGE_CHANGE_MINIMUM || percentageChange < 1 - MAIN_PERCENTAGE_CHANGE_MINIMUM) {
-        // set the new charging current
-        viridian::setChargingCurrent(availableCurrent);
-      } else {
-        // log to debug that we did not ask for an update of the charging current
-        debug::log("main: Change of charging current is not important enough (already charging at "+String(viridian::getChargingCurrent())+" Amps)");
+        // if the percentageChange is greater than allowed change
+        if (percentageChange > 1 + MAIN_PERCENTAGE_CHANGE_MINIMUM || percentageChange < 1 - MAIN_PERCENTAGE_CHANGE_MINIMUM) {
+          // set the new charging current
+          viridian::setChargingCurrent(availableCurrent);
+        } else {
+          // log to debug that we did not ask for an update of the charging current
+          debug::log("main: Change of charging current is not important enough (already charging at "+String(viridian::getChargingCurrent())+" Amps)");
+        }
       }
     }
   } else {
