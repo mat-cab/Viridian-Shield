@@ -5,7 +5,7 @@
 
 #include "viridian.h"
 
-double viridian::chargingCurrent;
+double viridian::_chargingCurrent;
 
 void viridian::initialize() {
     // initialize the underlying dac
@@ -32,9 +32,9 @@ void viridian::setChargingCurrent(const double maxAmps) {
     }
 
     // if this is a new command
-    if (newChargingCurrent != viridian::chargingCurrent) {
+    if (newChargingCurrent != viridian::_chargingCurrent) {
         // save it
-        viridian::chargingCurrent = newChargingCurrent;
+        viridian::_chargingCurrent = newChargingCurrent;
 
         // also send directly the command to the car
         viridian::sendToCar();
@@ -49,7 +49,7 @@ void viridian::stopCharging() {
 }
 
 double viridian::getChargingCurrent() {
-    return viridian::chargingCurrent;
+    return viridian::_chargingCurrent;
 }
 
 void viridian::resetChange() {
@@ -62,19 +62,19 @@ boolean viridian::currentChanged() {
 
 void viridian::sendToCar() {
     // special case to stop charging
-    if (viridian::chargingCurrent == 0.0) {
+    if (viridian::_chargingCurrent == 0.0) {
         debug::log("viridian: Sending stop command to Viridian");
 
         // just send 0 to the DAC
         dac_MCP4725::write(0);
     } else {
         // IC equivalent voltage for the current value
-        double ICV = VIRIDIAN_MIN_RANGE_ICV + (viridian::chargingCurrent - VIRIDIAN_MIN_RANGE_AMPS) * (VIRIDIAN_MAX_RANGE_ICV - VIRIDIAN_MIN_RANGE_ICV) / (VIRIDIAN_MAX_RANGE_AMPS - VIRIDIAN_MIN_RANGE_AMPS);
+        double ICV = VIRIDIAN_MIN_RANGE_ICV + (viridian::_chargingCurrent - VIRIDIAN_MIN_RANGE_AMPS) * (VIRIDIAN_MAX_RANGE_ICV - VIRIDIAN_MIN_RANGE_ICV) / (VIRIDIAN_MAX_RANGE_AMPS - VIRIDIAN_MIN_RANGE_AMPS);
 
         // value for the DAC
         uint16_t dacValue = ICV * (VIRIDIAN_DAC_MAX_V - VIRIDIAN_DAC_MIN_V) / VIRIDIAN_DAC_MAX_Q;
 
-        debug::log("viridian: Sending charging command to Viridian at "+String(viridian::chargingCurrent)+"A, IC equivalent voltage: "+String(ICV)+"V, DAC Value: "+String(dacValue));
+        debug::log("viridian: Sending charging command to Viridian at "+String(viridian::_chargingCurrent)+"A, IC equivalent voltage: "+String(ICV)+"V, DAC Value: "+String(dacValue));
 
         // Send the value to the DAC
         dac_MCP4725::write(dacValue);        

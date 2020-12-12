@@ -31,6 +31,6 @@ class viridian {
     private:
         static void sendToCar();
 
-        static double chargingCurrent;
+        static double _chargingCurrent;
         static boolean _currentChanged;
 };
