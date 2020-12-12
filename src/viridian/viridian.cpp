@@ -6,6 +6,7 @@
 #include "viridian.h"
 
 double viridian::_chargingCurrent;
+boolean viridian::_currentChanged;
 
 void viridian::initialize() {
     // initialize the underlying dac
