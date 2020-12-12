@@ -20,6 +20,9 @@ const double MAIN_PERCENTAGE_CHANGE_MINIMUM = 0.1;
 // initial wait time in ms after the setup
 // set to 10s
 const uint32_t MAIN_END_SETUP_WAIT = 10000;
+// wait time between command change and Teleinfo change
+// set to 1s
+const uint32_t MAIN_CURRENT_CHANGE_DURATION = 1000;
 // main cycle duration in ms
 // set to 1s
 const uint32_t MAIN_LOOP_DURATION = 1000;
@@ -58,6 +61,9 @@ void loop() {
   // log the teleinfo data
   debug::log("main: Teleinfo ISOUSC: "+String(teleInfo.ISOUSC));
   debug::log("main: Teleinfo IINST: "+String(teleInfo.IINST));
+
+  // reset the current changed info for the viridian
+  viridian::resetChange();
 
   // If timer is finished or ADPS is received
   if (timer::timerAllows() || teleInfo.ADPS > 0 ) {
@@ -102,6 +108,22 @@ void loop() {
   } else {
     // simple log message
     debug::log("main: waiting for appropriate time to change charge");
+  }
+
+  // check if the current changed at that cycle
+  if (viridian::currentChanged()) {
+    // wait for a bit so that the current is established
+    delay(MAIN_CURRENT_CHANGE_DURATION);
+
+    // read the teleinfo
+    teleInfo_t newTeleInfo = TI.get();
+
+    // check that the IINST has changed
+    if (newTeleInfo.IINST == teleInfo.IINST) {
+      // IINST has not changed, most likely we are not connected
+      // reset to no charging current
+      viridian::stopCharging();
+    } 
   }
 
   // wait a bit for the next cycle
