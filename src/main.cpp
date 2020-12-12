@@ -13,8 +13,6 @@
 const uint32_t MAIN_CHARGE_CYCLE = 1800000;
 // initial margin for the charing current in Amps
 const uint8_t MAIN_INITIAL_MARGIN = 1;
-// additional margin in Amps for the option
-const uint8_t MAIN_ADDITIONAL_OPTION_MARGIN = 2;
 // minimum percentage change to apply the new charging current
 const double MAIN_PERCENTAGE_CHANGE_MINIMUM = 0.1;
 // initial wait time in ms after the setup
@@ -77,7 +75,7 @@ void loop() {
     }
     // get the current margin
     // default to 1A + option for the 2A additional margin
-    uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_2A) * MAIN_ADDITIONAL_OPTION_MARGIN;
+    uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_2A) * 2 + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_1A);
 
     // Compute the avalaible current increase
     double availableCurrent = viridian::getChargingCurrent() + (teleInfo.ISOUSC - teleInfo.IINST) - currentMargin;
