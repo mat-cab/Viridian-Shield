@@ -55,6 +55,10 @@ void loop() {
   debug::log("main: Reading teleInfo");
   teleInfo_t teleInfo = TI.get();
 
+  // log the teleinfo data
+  debug::log("main: Teleinfo ISOUSC: "+String(teleInfo.ISOUSC));
+  debug::log("main: Teleinfo IINST: "+String(teleInfo.IINST));
+
   // If timer is finished or ADPS is received
   if (timer::timerAllows() || teleInfo.ADPS > 0 ) {
     // If there is an ADPS
@@ -93,10 +97,6 @@ void loop() {
       }
     }
   } else {
-    // log the teleinfo data
-    debug::log("main: Teleinfo ISOUSC: "+String(teleInfo.ISOUSC));
-    debug::log("main: Teleinfo IINST: "+String(teleInfo.IINST));
-
     // simple log message
     debug::log("main: waiting for appropriate time to change charge");
   }
