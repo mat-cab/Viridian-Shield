@@ -38,6 +38,9 @@ void viridian::setChargingCurrent(const double maxAmps) {
 
         // also send directly the command to the car
         viridian::sendToCar();
+
+        // also state that the current has changed
+        viridian::_currentChanged = true;
     }
 }
 
@@ -47,6 +50,14 @@ void viridian::stopCharging() {
 
 double viridian::getChargingCurrent() {
     return viridian::chargingCurrent;
+}
+
+void viridian::resetChange() {
+    viridian::_currentChanged = false;
+}
+
+boolean viridian::currentChanged() {
+    return viridian::_currentChanged;
 }
 
 void viridian::sendToCar() {

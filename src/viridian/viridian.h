@@ -24,9 +24,13 @@ class viridian {
         static void setChargingCurrent(const double maxAmps);
         static void stopCharging();
         static double getChargingCurrent();
+        
+        static void resetChange();
+        static boolean currentChanged();
 
     private:
         static void sendToCar();
 
         static double chargingCurrent;
+        static boolean _currentChanged;
 };
