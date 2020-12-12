@@ -64,7 +64,7 @@ void loop() {
     // If there is an ADPS
     if (teleInfo.ADPS > 0 ) {
       // log to debug
-      debug::log("main: ADPS received, stopped charging");
+      debug::log("main: ADPS received, adapting charge current");
     } else {
       // log to debug
       debug::log("main: Nominal timer activation");
