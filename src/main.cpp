@@ -55,14 +55,16 @@ void loop() {
   debug::log("main: Reading teleInfo");
   teleInfo_t teleInfo = TI.get();
 
-  // check if there is an ADPS
-  if (teleInfo.ADPS > 0) {
-    // if so, always ask to cut 
-    viridian::stopCharging();
-
-    // log to debug
-    debug::log("main: ADPS received, stopped charging");
-  } else if (timer::timerAllows()) {
+  // If timer is finished or ADPS is received
+  if (timer::timerAllows() || teleInfo.ADPS > 0 ) {
+    // If there is an ADPS
+    if (teleInfo.ADPS > 0 ) {
+      // log to debug
+      debug::log("main: ADPS received, stopped charging");
+    } else {
+      // log to debug
+      debug::log("main: Nominal timer activation");
+    }
     // get the current margin
     // default to 1A + option for the 2A additional margin
     uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_2A) * MAIN_ADDITIONAL_OPTION_MARGIN;
