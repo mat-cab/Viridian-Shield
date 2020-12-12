@@ -81,8 +81,11 @@ void loop() {
 
     // if we were not charging before, start charging (if it is more than the minimum in viridian module)
     if (viridian::getChargingCurrent() == 0.0) {
-      // set the appropriate charging current
-      viridian::setChargingCurrent(availableCurrent);
+      // also do not start charging if no current is available
+      if (availableCurrent > 0.0) {
+        // set the appropriate charging current
+        viridian::setChargingCurrent(availableCurrent);
+      }
     } else {
       // compute the percentage change
       double percentageChange = availableCurrent / viridian::getChargingCurrent();
