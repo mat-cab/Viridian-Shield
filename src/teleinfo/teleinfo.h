@@ -9,7 +9,7 @@
 // max length for the labels
 const uint8_t TELEINFO_LABEL_BUFFER_SIZE = 10;
 // max length for the values
-const uint8_t TELEINFO_VALUE_BUFFER_SIZE = 12;
+const uint8_t TELEINFO_VALUE_BUFFER_SIZE = 16;
 
 typedef struct teleinfo_t teleinfo_t;
 struct teleinfo_t {
