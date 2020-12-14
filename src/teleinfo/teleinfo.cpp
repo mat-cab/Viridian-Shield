@@ -91,6 +91,11 @@ bool teleinfo::readLine() {
     // clear the buffer
     teleinfo::clearBuffer();
 
+    // First make sure that we are at the end of a line
+    do {
+        while (!Serial.available()) ;
+    } while (Serial.read() != '\n');
+
     // First read the label
     if (teleinfo::readWord(teleinfo::labelBuffer, TELEINFO_LABEL_BUFFER_SIZE, cks) ) {
         // Next read the value
@@ -98,15 +103,6 @@ bool teleinfo::readLine() {
             // Read the final cks
             while (!Serial.available()) ;
             messageCks = Serial.read();
-
-            // Read the end of line
-            while (!Serial.available()) ;
-            if (Serial.read() != '\n') {
-                // if not EOL, probably an issue somewhere else ?
-                debug::log("teleinfo: EOL was not found when expected");
-
-                return false;
-            }
 
             // compute our own cks
             cks = (cks & 0x3F) + 0x20;
