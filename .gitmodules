@@ -1,4 +1,0 @@
-[submodule "lib/teleInfo"]
-	path = lib/teleInfo
-	url = https://github.com/jaysee/teleInfo.git
-	branch = master

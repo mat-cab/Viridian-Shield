@@ -1,11 +1,10 @@
 #include <Arduino.h>
 
-#include <teleInfo.h>
-
 #include "debug/debug.h"
 #include "inputs/inputs.h"
 #include "viridian/viridian.h"
 #include "timer/timer.h"
+#include "teleinfo/teleinfo.h"
 
 // constants for the main program
 // allowed duration in ms to change the charging current (to avoid sending new commands every cycle)
@@ -25,9 +24,6 @@ const uint32_t MAIN_CURRENT_CHANGE_DURATION = 1000;
 // set to 1s
 const uint32_t MAIN_LOOP_DURATION = 1000;
 
-// Create the teleInfo Object on pin 0
-teleInfo TI(0);
-
 void setup() {
   // initialize debug
   debug::initialize();
@@ -44,6 +40,9 @@ void setup() {
   // initialize the timer
   timer::setTimerDuration(MAIN_CHARGE_CYCLE);
 
+  // initialize the teleinfo interface
+  teleinfo::initialize();
+
   // debug message to know we finished setup
   debug::log("main: Setup finished");
 
@@ -54,19 +53,19 @@ void setup() {
 void loop() {
   // Read the teleInfo
   debug::log("main: Reading teleInfo");
-  teleInfo_t teleInfo = TI.get();
+  teleinfo_t teleinfo = teleinfo::read();
 
   // log the teleinfo data
-  debug::log("main: Teleinfo ISOUSC: "+String(teleInfo.ISOUSC));
-  debug::log("main: Teleinfo IINST: "+String(teleInfo.IINST));
+  debug::log("main: Teleinfo ISOUSC: "+String(teleinfo.ISOUSC));
+  debug::log("main: Teleinfo IINST: "+String(teleinfo.IINST));
 
   // reset the current changed info for the viridian
   viridian::resetChange();
 
   // If timer is finished or ADPS is received
-  if (timer::timerAllows() || teleInfo.ADPS > 0 ) {
+  if (timer::timerAllows() || teleinfo.ADPS > 0 ) {
     // If there is an ADPS
-    if (teleInfo.ADPS > 0 ) {
+    if (teleinfo.ADPS > 0 ) {
       // log to debug
       debug::log("main: ADPS received, adapting charge current");
     } else {
@@ -78,7 +77,7 @@ void loop() {
     uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_2A) * 2 + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_1A);
 
     // Compute the avalaible current increase
-    double availableCurrent = viridian::getChargingCurrent() + (teleInfo.ISOUSC - teleInfo.IINST) - currentMargin;
+    double availableCurrent = viridian::getChargingCurrent() + (teleinfo.ISOUSC - teleinfo.IINST) - currentMargin;
 
     // additional debug message to understand what is going on
     debug::log("main: available current is now "+String(availableCurrent)+ " Amps");
@@ -120,10 +119,10 @@ void loop() {
     delay(MAIN_CURRENT_CHANGE_DURATION);
 
     // read the teleinfo
-    teleInfo_t newTeleInfo = TI.get();
+    teleinfo_t newTeleInfo = teleinfo::read();
 
     // check that the IINST has changed
-    if (newTeleInfo.IINST == teleInfo.IINST) {
+    if (newTeleInfo.IINST == teleinfo.IINST) {
       // IINST has not changed, most likely we are not connected
       // reset to no charging current
       viridian::stopCharging();
