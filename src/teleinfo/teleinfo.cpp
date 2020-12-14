@@ -30,7 +30,7 @@ teleinfo_t teleinfo::read() {
     // Find the end of the ongoing teleinfo frame
     do {            
         teleinfo::readLine();
-    } while (!strcmp(teleinfo::labelBuffer, "MOTDETAT"));
+    } while (strcmp(teleinfo::labelBuffer, "MOTDETAT") != 0);
     debug::log("teleinfo: found end of teleinfo frame");
 
     // we are at the start of a frame
@@ -72,7 +72,7 @@ teleinfo_t teleinfo::read() {
         } else {
             debug::log("teleinfo: read failed");
         }
-    } while (!strcmp(teleinfo::labelBuffer, "MOTDETAT"));
+    } while (strcmp(teleinfo::labelBuffer, "MOTDETAT") != 0);
 
     // return the result (at the end)
     return result;
@@ -161,7 +161,7 @@ inline bool teleinfo::readWord(char* buffer, uint8_t maxBufferLength, uint8_t &c
 
 bool teleinfo::record(const char* label, char* destination) {
     // compare the label with the expected label
-    if (strcmp(teleinfo::labelBuffer, label)) {
+    if (strcmp(teleinfo::labelBuffer, label) == 0) {
         // copy the value to the destination
         strcpy(destination, teleinfo::valueBuffer);
         // return OK
@@ -173,7 +173,7 @@ bool teleinfo::record(const char* label, char* destination) {
 
 bool teleinfo::record(const char* label, uint8_t &destination) {
     // compare the label with the expected label
-    if (strcmp(teleinfo::labelBuffer, label)) {
+    if (strcmp(teleinfo::labelBuffer, label) == 0) {
         // convert the value to the destination
         destination = atoi(teleinfo::valueBuffer);
         // return OK
@@ -185,7 +185,7 @@ bool teleinfo::record(const char* label, uint8_t &destination) {
 
 bool teleinfo::record(const char* label, uint32_t &destination) {
     // compare the label with the expected label
-    if (strcmp(teleinfo::labelBuffer, label)) {
+    if (strcmp(teleinfo::labelBuffer, label) == 0) {
         // convert the value to the destination
         destination = atol(teleinfo::valueBuffer);
         // return OK
