@@ -73,7 +73,7 @@ void viridian::sendToCar() {
         double ICV = VIRIDIAN_MIN_RANGE_ICV + (viridian::_chargingCurrent - VIRIDIAN_MIN_RANGE_AMPS) * (VIRIDIAN_MAX_RANGE_ICV - VIRIDIAN_MIN_RANGE_ICV) / (VIRIDIAN_MAX_RANGE_AMPS - VIRIDIAN_MIN_RANGE_AMPS);
 
         // value for the DAC
-        uint16_t dacValue = ICV * (VIRIDIAN_DAC_MAX_V - VIRIDIAN_DAC_MIN_V) / VIRIDIAN_DAC_MAX_Q;
+        uint16_t dacValue = (ICV - VIRIDIAN_DAC_MIN_V) / (VIRIDIAN_DAC_MAX_V - VIRIDIAN_DAC_MIN_V) * VIRIDIAN_DAC_MAX_Q;
 
         debug::log("viridian: Sending charging command to Viridian at "+String(viridian::_chargingCurrent)+"A, IC equivalent voltage: "+String(ICV)+"V, DAC Value: "+String(dacValue));
 
