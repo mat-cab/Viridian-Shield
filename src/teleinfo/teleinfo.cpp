@@ -143,7 +143,7 @@ inline bool teleinfo::readWord(char* buffer, uint8_t maxBufferLength, uint8_t &c
         }
     } while (c != ' ' && counter < maxBufferLength);
 
-    if (counter == maxBufferLength) {
+    if (c != ' ' && counter == maxBufferLength) {
         // check for buffer overflow
         debug::log("teleinfo: buffer overflow !!! buffer cleared");
         debug::log("teleinfo: buffer was "+String(buffer));
