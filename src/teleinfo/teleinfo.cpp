@@ -98,8 +98,10 @@ bool teleinfo::readLine() {
 
     // First read the label
     if (teleinfo::readWord(teleinfo::labelBuffer, TELEINFO_LABEL_BUFFER_SIZE, cks) ) {
+        debug::log("teleinfo: read label "+String(teleinfo::labelBuffer));
         // Next read the value
         if (teleinfo::readWord(teleinfo::valueBuffer, TELEINFO_VALUE_BUFFER_SIZE, cks)) {
+            debug::log("teleinfo: read value "+String(teleinfo::valueBuffer));
             // Read the final cks
             while (!Serial.available()) ;
             messageCks = Serial.read();
