@@ -124,6 +124,7 @@ void loop() {
     // check that the IINST has changed
     if (newTeleInfo.IINST == teleinfo.IINST) {
       // IINST has not changed, most likely we are not connected
+      debug::log("main: no change of IINST, charger is probably offline. Stopping charge");
       // reset to no charging current
       viridian::stopCharging();
     } 
