@@ -115,6 +115,9 @@ void loop() {
 
   // check if the current changed at that cycle
   if (viridian::currentChanged()) {
+    // log that we are waiting
+    debug::log("main: waiting for car to change charge...");
+
     // wait for a bit so that the current is established
     delay(MAIN_CURRENT_CHANGE_DURATION);
 
