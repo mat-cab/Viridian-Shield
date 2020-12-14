@@ -31,8 +31,8 @@ struct teleinfo_t {
 
 	uint32_t BASE; 
 
-	uint32_t HC_HC; 
-	uint32_t HC_HP; 
+	uint32_t HCHC; 
+	uint32_t HCHP; 
 
 	uint32_t EJP_HN; 
 	uint32_t EJP_HPM; 

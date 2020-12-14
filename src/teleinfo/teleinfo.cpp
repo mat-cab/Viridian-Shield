@@ -40,6 +40,7 @@ teleinfo_t teleinfo::read() {
             if (record("ADCO", result.ADCO)) continue;
             if (record("OPTARIF", result.OPTARIF)) continue;
             if (record("ISOUSC", result.ISOUSC)) continue;
+            if (record("PTEC", result.PTEC)) continue;
             if (record("IINST", result.IINST)) continue;
             if (record("IINST1", result.IINST1)) continue;
             if (record("IINST2", result.IINST2)) continue;
@@ -52,8 +53,8 @@ teleinfo_t teleinfo::read() {
             if (record("PAPP", result.PAPP)) continue;
             if (record("PMAX", result.PMAX)) continue;
             if (record("BASE", result.BASE)) continue;
-            if (record("HC_HC", result.HC_HC)) continue;
-            if (record("HC_HP", result.HC_HP)) continue;
+            if (record("HCHC", result.HCHC)) continue;
+            if (record("HCHP", result.HCHP)) continue;
             if (record("EJP_HN", result.EJP_HN)) continue;
             if (record("EJP_HPM", result.EJP_HPM)) continue;
             if (record("PEJP", result.PEJP)) continue;
