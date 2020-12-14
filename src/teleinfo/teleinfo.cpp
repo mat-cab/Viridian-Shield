@@ -25,11 +25,13 @@ teleinfo_t teleinfo::read() {
     // Begin by flushing the serial interface
     while (Serial.available())
         Serial.read();
+    debug::log("teleinfo: Serial flushed");
 
     // Find the end of the ongoing teleinfo frame
     do {            
         teleinfo::readLine();
     } while (!strcmp(teleinfo::labelBuffer, "MOTDETAT"));
+    debug::log("teleinfo: found end of teleinfo frame");
 
     // we are at the start of a frame
     do {
