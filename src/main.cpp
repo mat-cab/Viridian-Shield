@@ -23,6 +23,9 @@ const uint32_t MAIN_CURRENT_CHANGE_DURATION = 1000;
 // main cycle duration in ms
 // set to 1s
 const uint32_t MAIN_LOOP_DURATION = 1000;
+// current to send to the Viridian when no car is charging
+const double MAIN_CURRENT_NO_CAR_CHARGING = 10.0;
+
 
 void setup() {
   // initialize debug
@@ -51,16 +54,25 @@ void setup() {
 }
 
 void loop() {
+  teleinfo_t teleinfo;
+
+  // reset the current changed info for the viridian
+  viridian::resetChange();
+  
+  if (!inputs::readOption(INPUTS_OPTION_CHARGING_CAR)) {
+    // There is no car charging
+    debug::log("main: No car is charging");
+
+    // send the appropriate charging current
+    viridian::setChargingCurrent(MAIN_CURRENT_NO_CAR_CHARGING);
+  } else {
   // Read the teleInfo
   debug::log("main: Reading teleInfo");
-  teleinfo_t teleinfo = teleinfo::read();
+    teleinfo = teleinfo::read();
 
   // log the teleinfo data
   debug::log("main: Teleinfo ISOUSC: "+String(teleinfo.ISOUSC));
   debug::log("main: Teleinfo IINST: "+String(teleinfo.IINST));
-
-  // reset the current changed info for the viridian
-  viridian::resetChange();
 
   // If timer is finished or ADPS is received
   if (timer::timerAllows() || teleinfo.ADPS > 0 ) {
@@ -94,7 +106,7 @@ void loop() {
       if ( (availableCurrent - viridian::getChargingCurrent()) < 1.0 || (availableCurrent - viridian::getChargingCurrent()) > -1.0) {
         // if not, log a message
         debug::log("main: Change of charging current is less than one amp. Not changing.");
-      }  else {
+        } else {
         // compute the percentage change
         double percentageChange = availableCurrent / viridian::getChargingCurrent();
 
@@ -112,25 +124,6 @@ void loop() {
     // simple log message
     debug::log("main: waiting for appropriate time to change charge");
   }
-
-  // check if the current changed at that cycle
-  if (viridian::currentChanged()) {
-    // log that we are waiting
-    debug::log("main: waiting for car to change charge...");
-
-    // wait for a bit so that the current is established
-    delay(MAIN_CURRENT_CHANGE_DURATION);
-
-    // read the teleinfo
-    teleinfo_t newTeleInfo = teleinfo::read();
-
-    // check that the IINST has changed
-    if (newTeleInfo.IINST == teleinfo.IINST) {
-      // IINST has not changed, most likely we are not connected
-      debug::log("main: no change of IINST, charger is probably offline. Stopping charge");
-      // reset to no charging current
-      viridian::stopCharging();
-    } 
   }
 
   // wait a bit for the next cycle
