@@ -69,8 +69,11 @@ void viridian::sendToCar() {
         // just send 0 to the DAC
         dac_MCP4725::write(0);
     } else {
+        // Correct the charging current (because of offset)
+        double correctedChargingCurrent = viridian::_chargingCurrent + VIRIDIAN_MEASURED_OFFSET;
+
         // IC equivalent voltage for the current value
-        double ICV = VIRIDIAN_MIN_RANGE_ICV + (viridian::_chargingCurrent - VIRIDIAN_MIN_RANGE_AMPS) * (VIRIDIAN_MAX_RANGE_ICV - VIRIDIAN_MIN_RANGE_ICV) / (VIRIDIAN_MAX_RANGE_AMPS - VIRIDIAN_MIN_RANGE_AMPS);
+        double ICV = VIRIDIAN_MIN_RANGE_ICV + (correctedChargingCurrent - VIRIDIAN_MIN_RANGE_AMPS) * (VIRIDIAN_MAX_RANGE_ICV - VIRIDIAN_MIN_RANGE_ICV) / (VIRIDIAN_MAX_RANGE_AMPS - VIRIDIAN_MIN_RANGE_AMPS);
 
         // value for the DAC
         uint16_t dacValue = (ICV - VIRIDIAN_DAC_MIN_V) / (VIRIDIAN_DAC_MAX_V - VIRIDIAN_DAC_MIN_V) * VIRIDIAN_DAC_MAX_Q;

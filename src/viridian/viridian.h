@@ -17,6 +17,11 @@ static const double VIRIDIAN_DAC_MAX_V = 5.0;
 // DAC max value
 static const uint16_t VIRIDIAN_DAC_MAX_Q = 4095;
 
+// Measured offset for current measurement
+// positive offset means that the real current is too low
+// negative offset means that the real current is too high
+static const double VIRIDIAN_MEASURED_OFFSET = -2;
+
 class viridian {
     public:
         static void initialize();
