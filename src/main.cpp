@@ -66,72 +66,72 @@ void loop() {
     // send the appropriate charging current
     viridian::setChargingCurrent(MAIN_CURRENT_NO_CAR_CHARGING);
   } else {
-  // Read the teleInfo
-  debug::log("main: Reading teleInfo");
-    teleinfo = teleinfo::read();
+    // Read the teleInfo
+    debug::log("main: Reading teleInfo");
+      teleinfo = teleinfo::read();
 
-  // log the teleinfo data
-  debug::log("main: Teleinfo ISOUSC: "+String(teleinfo.ISOUSC));
-  debug::log("main: Teleinfo IINST: "+String(teleinfo.IINST));
+    // log the teleinfo data
+    debug::log("main: Teleinfo ISOUSC: "+String(teleinfo.ISOUSC));
+    debug::log("main: Teleinfo IINST: "+String(teleinfo.IINST));
 
-  // If timer is finished or ADPS is received
-  if (timer::timerAllows() || teleinfo.ADPS > 0 ) {
-    // If there is an ADPS
-    if (teleinfo.ADPS > 0 ) {
-      // log to debug
-      debug::log("main: ADPS received, adapting charge current");
-    } else {
-      // log to debug
-      debug::log("main: Nominal timer activation");
-    }
-    // get the current margin
-    // default to 1A + option for the 2A additional margin
-    uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_1A);
-
-    // ISOUSC multiplier
-    double iSOUSCMultplier = 1.0;
-
-    // If option is set, add 20 margin on ISOUSC
-    if (inputs::readOption(INPUTS_OPTION_GREATER_ISOUSC)) {
-      iSOUSCMultplier += 0.2;
-    }
-
-    // Compute the avalaible current increase
-    double availableCurrent = viridian::getChargingCurrent() + (teleinfo.ISOUSC * iSOUSCMultplier - teleinfo.IINST) - currentMargin;
-
-    // additional debug message to understand what is going on
-    debug::log("main: available current is now "+String(availableCurrent)+ " Amps");
-
-    // if we were not charging before, start charging (if it is more than the minimum in viridian module)
-    if (viridian::getChargingCurrent() == 0.0) {
-      // also do not start charging if no current is available
-      if (availableCurrent > 0.0) {
-        // set the appropriate charging current
-        viridian::setChargingCurrent(availableCurrent);
+    // If timer is finished or ADPS is received
+    if (timer::timerAllows() || teleinfo.ADPS > 0 ) {
+      // If there is an ADPS
+      if (teleinfo.ADPS > 0 ) {
+        // log to debug
+        debug::log("main: ADPS received, adapting charge current");
+      } else {
+        // log to debug
+        debug::log("main: Nominal timer activation");
       }
-    } else {
-      // check that the availableCurrent is at least one Amp different
-      if ( (availableCurrent - viridian::getChargingCurrent()) < 1.0 || (availableCurrent - viridian::getChargingCurrent()) > -1.0) {
-        // if not, log a message
-        debug::log("main: Change of charging current is less than one amp. Not changing.");
-        } else {
-        // compute the percentage change
-        double percentageChange = availableCurrent / viridian::getChargingCurrent();
+      // get the current margin
+      // default to 1A + option for the 2A additional margin
+      uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_1A);
 
-        // if the percentageChange is greater than allowed change
-        if (percentageChange > 1 + MAIN_PERCENTAGE_CHANGE_MINIMUM || percentageChange < 1 - MAIN_PERCENTAGE_CHANGE_MINIMUM) {
-          // set the new charging current
+      // ISOUSC multiplier
+      double iSOUSCMultplier = 1.0;
+
+      // If option is set, add 20 margin on ISOUSC
+      if (inputs::readOption(INPUTS_OPTION_GREATER_ISOUSC)) {
+        iSOUSCMultplier += 0.2;
+      }
+
+      // Compute the avalaible current increase
+      double availableCurrent = viridian::getChargingCurrent() + (teleinfo.ISOUSC * iSOUSCMultplier - teleinfo.IINST) - currentMargin;
+
+      // additional debug message to understand what is going on
+      debug::log("main: available current is now "+String(availableCurrent)+ " Amps");
+
+      // if we were not charging before, start charging (if it is more than the minimum in viridian module)
+      if (viridian::getChargingCurrent() == 0.0) {
+        // also do not start charging if no current is available
+        if (availableCurrent > 0.0) {
+          // set the appropriate charging current
           viridian::setChargingCurrent(availableCurrent);
-        } else {
-          // log to debug that we did not ask for an update of the charging current
-          debug::log("main: Change of charging current is not important enough (already charging at "+String(viridian::getChargingCurrent())+" Amps)");
+        }
+      } else {
+        // check that the availableCurrent is at least one Amp different
+        if ( (availableCurrent - viridian::getChargingCurrent()) < 1.0 || (availableCurrent - viridian::getChargingCurrent()) > -1.0) {
+          // if not, log a message
+          debug::log("main: Change of charging current is less than one amp. Not changing.");
+          } else {
+          // compute the percentage change
+          double percentageChange = availableCurrent / viridian::getChargingCurrent();
+
+          // if the percentageChange is greater than allowed change
+          if (percentageChange > 1 + MAIN_PERCENTAGE_CHANGE_MINIMUM || percentageChange < 1 - MAIN_PERCENTAGE_CHANGE_MINIMUM) {
+            // set the new charging current
+            viridian::setChargingCurrent(availableCurrent);
+          } else {
+            // log to debug that we did not ask for an update of the charging current
+            debug::log("main: Change of charging current is not important enough (already charging at "+String(viridian::getChargingCurrent())+" Amps)");
+          }
         }
       }
+    } else {
+      // simple log message
+      debug::log("main: waiting for appropriate time to change charge");
     }
-  } else {
-    // simple log message
-    debug::log("main: waiting for appropriate time to change charge");
-  }
   }
 
   // wait a bit for the next cycle
