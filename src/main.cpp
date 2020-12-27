@@ -86,10 +86,18 @@ void loop() {
     }
     // get the current margin
     // default to 1A + option for the 2A additional margin
-    uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_2A) * 2 + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_1A);
+    uint8_t currentMargin = MAIN_INITIAL_MARGIN + inputs::readOption(INPUTS_OPTION_MARGIN_ADD_1A);
+
+    // ISOUSC multiplier
+    double iSOUSCMultplier = 1.0;
+
+    // If option is set, add 20 margin on ISOUSC
+    if (inputs::readOption(INPUTS_OPTION_GREATER_ISOUSC)) {
+      iSOUSCMultplier += 0.2;
+    }
 
     // Compute the avalaible current increase
-    double availableCurrent = viridian::getChargingCurrent() + (teleinfo.ISOUSC - teleinfo.IINST) - currentMargin;
+    double availableCurrent = viridian::getChargingCurrent() + (teleinfo.ISOUSC * iSOUSCMultplier - teleinfo.IINST) - currentMargin;
 
     // additional debug message to understand what is going on
     debug::log("main: available current is now "+String(availableCurrent)+ " Amps");
