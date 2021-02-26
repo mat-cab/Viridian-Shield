@@ -48,6 +48,14 @@ struct teleinfo_t {
 	char HHPHC;
 
     char MOTDETAT[6]; 
+
+	teleinfo_t() :
+		ADCO( { '\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0',} ),
+		OPTARIF( {'\0','\0','\0','\0',}),
+		ISOUSC( 0 ),
+		IINST( 0 ),
+		ADPS( 0 )
+		{}
 };
 
 class teleinfo {
