@@ -11,7 +11,10 @@ boolean viridian::_currentChanged;
 void viridian::initialize() {
     // initialize the underlying dac
     dac_MCP4725::initialize();
-    
+
+    // set the starting charging current to not 0
+    viridian::_chargingCurrent = 1.0;
+
     // set the charging current to 0
     viridian::stopCharging();
 }
