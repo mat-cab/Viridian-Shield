@@ -135,7 +135,7 @@ void loop() {
         }
       } else {
         // check that the availableCurrent is at least one Amp different
-        if ( (availableCurrent - viridian::getChargingCurrent()) < 1.0 || (availableCurrent - viridian::getChargingCurrent()) > -1.0) {
+        if ((-1.0 < (availableCurrent - viridian::getChargingCurrent())) && ((availableCurrent - viridian::getChargingCurrent()) < 1.0)) {
           // if not, log a message
           debug::log("main: Change of charging current is less than one amp. Not changing.");
           } else {
