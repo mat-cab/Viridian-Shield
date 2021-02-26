@@ -18,8 +18,8 @@ const double MAIN_PERCENTAGE_CHANGE_MINIMUM = 0.1;
 // set to 10s
 const uint32_t MAIN_END_SETUP_WAIT = 10000;
 // wait time between command change and Teleinfo change
-// set to 1s
-const uint32_t MAIN_CURRENT_CHANGE_DURATION = 1000;
+// set to 5s
+const uint32_t MAIN_CURRENT_CHANGE_DURATION = 5000;
 // main cycle duration in ms
 // set to 1s
 const uint32_t MAIN_LOOP_DURATION = 1000;
@@ -146,6 +146,9 @@ void loop() {
           if (percentageChange > 1 + MAIN_PERCENTAGE_CHANGE_MINIMUM || percentageChange < 1 - MAIN_PERCENTAGE_CHANGE_MINIMUM) {
             // set the new charging current
             viridian::setChargingCurrent(availableCurrent);
+
+            // delay after the change of charge
+            delay(MAIN_CURRENT_CHANGE_DURATION);
           } else {
             // log to debug that we did not ask for an update of the charging current
             debug::log("main: Change of charging current is not important enough (already charging at "+String(viridian::getChargingCurrent())+" Amps)");
