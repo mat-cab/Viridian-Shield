@@ -8,8 +8,8 @@
 
 // constants for the main program
 // allowed duration in ms to change the charging current (to avoid sending new commands every cycle)
-// set to 30 mins (= 1800s = 1 800 000 ms)
-const uint32_t MAIN_CHARGE_CYCLE = 1800000;
+// set to 15 mins (= 900s = 900 000 ms)
+const uint32_t MAIN_CHARGE_CYCLE = 900000;
 // initial margin for the charing current in Amps
 const uint8_t MAIN_INITIAL_MARGIN = 1;
 // minimum percentage change to apply the new charging current
