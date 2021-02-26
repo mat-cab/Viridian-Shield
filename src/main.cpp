@@ -25,6 +25,9 @@ const uint32_t MAIN_CURRENT_CHANGE_DURATION = 1000;
 const uint32_t MAIN_LOOP_DURATION = 1000;
 // current to send to the Viridian when no car is charging
 const double MAIN_CURRENT_NO_CAR_CHARGING = 10.0;
+// Delay after the start of the charge
+// set to 15s
+const uint32_t MAIN_INITIAL_CHARGE_DELAY = 15000;
 
 
 void setup() {
@@ -56,6 +59,8 @@ void setup() {
 void loop() {
   teleinfo_t teleinfo;
 
+  static boolean chargeStarted;
+
   // reset the current changed info for the viridian
   viridian::resetChange();
   
@@ -65,7 +70,18 @@ void loop() {
 
     // send the appropriate charging current
     viridian::setChargingCurrent(MAIN_CURRENT_NO_CAR_CHARGING);
+
+    // State that the charge did not start
+    chargeStarted = false;
   } else {
+    if (chargeStarted == false) {
+      // log
+      debug::log("main: Car just started charging, waiting for charge to start");
+
+      // let the car start charging
+      delay(MAIN_INITIAL_CHARGE_DELAY);
+    }
+
     // Read the teleInfo
     debug::log("main: Reading teleInfo");
       teleinfo = teleinfo::read();
@@ -75,9 +91,17 @@ void loop() {
     debug::log("main: Teleinfo IINST: "+String(teleinfo.IINST));
 
     // If timer is finished or ADPS is received
-    if (timer::timerAllows() || teleinfo.ADPS > 0 ) {
-      // If there is an ADPS
-      if (teleinfo.ADPS > 0 ) {
+    if (timer::timerAllows() || teleinfo.ADPS > 0 || chargeStarted == false) {
+      if ( chargeStarted == false ) {
+        // log
+        debug::log("main: Now adapting charge current for first charge");
+
+        // reset the timer
+        timer::resetTimer();
+
+        // Record that the charge has started
+        chargeStarted = true;
+      } else if (teleinfo.ADPS > 0 ) {
         // log to debug
         debug::log("main: ADPS received, adapting charge current");
       } else {
