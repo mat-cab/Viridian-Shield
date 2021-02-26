@@ -64,7 +64,7 @@ void loop() {
   // reset the current changed info for the viridian
   viridian::resetChange();
   
-  if (!inputs::readOption(INPUTS_OPTION_CHARGING_CAR)) {
+  if (inputs::readOption(INPUTS_OPTION_CHARGING_CAR)) {
     // There is no car charging
     debug::log("main: No car is charging");
 
