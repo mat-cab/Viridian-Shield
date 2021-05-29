@@ -5,7 +5,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Viridian Shield"
-Date "2021-02-26"
+Date "2021-05-29"
 Rev "v02"
 Comp ""
 Comment1 ""
@@ -240,8 +240,6 @@ Wire Wire Line
 Text Notes 9700 1600 0    60   ~ 0
 1
 Wire Notes Line
-	11200 1000 10700 1000
-Wire Notes Line
 	10700 1000 10700 500 
 $Comp
 L Connector_Generic:Conn_01x06 J3
@@ -346,17 +344,13 @@ F 3 "" H 6400 5650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text Label 7700 4250 2    50   ~ 0
-D4
+D3
 Text Label 7700 4150 2    50   ~ 0
 D5
-Text Label 7700 4450 2    50   ~ 0
-D2
 Text Label 7700 4050 2    50   ~ 0
 D6
 Text Label 7700 4350 2    50   ~ 0
-D3
-Text Label 7700 3950 2    50   ~ 0
-D7
+D2
 $Comp
 L Device:R_POT RV2
 U 1 1 5EBFC850
@@ -582,27 +576,19 @@ Wire Wire Line
 Text Notes 3200 5200 0    50   ~ 0
 Manual Potentiometer
 $Comp
-L Switch:SW_DIP_x06 SW2
+L Switch:SW_DIP_x04 SW2
 U 1 1 5EB2E35B
 P 7150 4250
-F 0 "SW2" H 7150 4700 50  0000 C CNN
-F 1 "D2-7_INPUT_SWITCHES" H 7150 3900 50  0000 C CNN
-F 2 "ViridianShield:PinHeader_2x06_P2.54mm_Vertical_OtherPinAlloc" H 7150 4250 50  0001 C CNN
+F 0 "SW2" H 7150 4600 50  0000 C CNN
+F 1 "D2-6_INPUT_SWITCHES" H 7150 4000 50  0000 C CNN
+F 2 "ViridianShield:PinHeader_2x04_P2.54mm_Vertical_OtherPinAlloc" H 7150 4250 50  0001 C CNN
 F 3 "~" H 7150 4250 50  0001 C CNN
 	1    7150 4250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6850 3950 6650 3950
-Wire Wire Line
-	6650 3950 6650 4050
-Wire Wire Line
-	6650 4450 6850 4450
-Wire Wire Line
 	6850 4350 6650 4350
 Connection ~ 6650 4350
-Wire Wire Line
-	6650 4350 6650 4450
 Wire Wire Line
 	6850 4250 6650 4250
 Connection ~ 6650 4250
@@ -615,11 +601,8 @@ Wire Wire Line
 	6650 4150 6650 4250
 Wire Wire Line
 	6850 4050 6650 4050
-Connection ~ 6650 4050
 Wire Wire Line
 	6650 4050 6650 4150
-Wire Wire Line
-	7450 3950 7700 3950
 Wire Wire Line
 	7450 4050 7700 4050
 Wire Wire Line
@@ -628,8 +611,6 @@ Wire Wire Line
 	7450 4250 7700 4250
 Wire Wire Line
 	7450 4350 7700 4350
-Wire Wire Line
-	7450 4450 7700 4450
 $Comp
 L Device:R_POT RV1
 U 1 1 5EBCD45F
@@ -710,7 +691,7 @@ Wire Wire Line
 Wire Wire Line
 	3700 1800 4350 1800
 Text Label 4350 1800 2    50   ~ 0
-D8
+D9
 Wire Wire Line
 	3550 4250 3550 4350
 Connection ~ 3550 4350
@@ -752,13 +733,8 @@ F 3 "~" H 10450 5600 50  0001 C CNN
 $EndComp
 NoConn ~ 10550 1400
 NoConn ~ 9350 1450
-NoConn ~ 8900 2700
-NoConn ~ 8900 2800
 Wire Wire Line
 	10100 5700 10250 5700
-Wire Wire Line
-	6650 4450 6650 4650
-Connection ~ 6650 4450
 NoConn ~ 10550 2900
 Wire Wire Line
 	4350 6100 4350 6200
@@ -843,8 +819,6 @@ Wire Wire Line
 	6450 1700 7000 1700
 Wire Notes Line
 	3100 6550 6950 6550
-NoConn ~ 8900 2900
-NoConn ~ 8900 3000
 Text Label 10550 1200 0    60   ~ 0
 SCL
 Text Label 10550 1300 0    60   ~ 0
@@ -870,14 +844,13 @@ Wire Wire Line
 	3550 4050 3550 4150
 Connection ~ 3550 4150
 Text Label 5150 4350 2    50   ~ 0
-D10
+A3
 Text Label 5150 4250 2    50   ~ 0
-D11
+A2
 Text Label 5150 4150 2    50   ~ 0
-D12
+D7
 Text Label 5150 4050 2    50   ~ 0
-D13
-NoConn ~ 10550 2000
+D8
 $Comp
 L Switch:SW_Push SW5
 U 1 1 6042F464
@@ -913,4 +886,36 @@ Reset switch
 Wire Notes Line
 	500  5000 8500 5000
 NoConn ~ 10550 3000
+NoConn ~ 10550 1600
+NoConn ~ 10550 1700
+NoConn ~ 10550 1800
+NoConn ~ 10550 1900
+NoConn ~ 10550 2600
+NoConn ~ 8900 3000
+NoConn ~ 8900 2900
+Wire Wire Line
+	6650 4350 6650 4650
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even P9
+U 1 1 60B5832E
+P 10400 650
+F 0 "P9" H 10400 850 50  0000 L CNN
+F 1 "Conn_02x03_Odd_Even" V 10495 830 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 10400 650 50  0001 C CNN
+F 3 "~" H 10400 650 50  0001 C CNN
+	1    10400 650 
+	-1   0    0    1   
+$EndComp
+Wire Notes Line
+	9950 1000 9950 500 
+Wire Notes Line
+	9950 1000 11200 1000
+Text Notes 10250 1000 0    60   ~ 0
+ICSP
+NoConn ~ 10600 750 
+NoConn ~ 10600 650 
+NoConn ~ 10600 550 
+NoConn ~ 10100 750 
+NoConn ~ 10100 650 
+NoConn ~ 10100 550 
 $EndSCHEMATC
