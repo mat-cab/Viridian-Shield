@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include <SoftwareSerial.h>
+
 #include "debug/debug.h"
 
 #include "teleinfo.h"
@@ -7,15 +9,15 @@
 char teleinfo::labelBuffer[TELEINFO_LABEL_BUFFER_SIZE];
 char teleinfo::valueBuffer[TELEINFO_VALUE_BUFFER_SIZE];
 
+// Use same pin for RX and TX since we will not send data
+SoftwareSerial sSerial(TELEINFO_INPUT_PIN, TELEINFO_INPUT_PIN);
+
 void teleinfo::initialize() {
     // clear the buffer
     teleinfo::clearBuffer();
 
     // start Serial
-    Serial.begin(1200, SERIAL_7E1);
-
-    // wait for Serial to become available
-    while (!Serial) ;
+    sSerial.begin(1200);
 }
 
 teleinfo_t teleinfo::read() {
@@ -23,9 +25,9 @@ teleinfo_t teleinfo::read() {
     teleinfo_t result;
 
     // Begin by flushing the serial interface
-    while (Serial.available())
-        Serial.read();
-    debug::log(F("teleinfo: Serial flushed"));
+    while (sSerial.available())
+        sSerial.read();
+    debug::log(F("teleinfo: sSerial.flushed"));
 
     // Find the end of the ongoing teleinfo frame
     do {            
@@ -96,8 +98,8 @@ bool teleinfo::readLine() {
 
     // First make sure that we are at the end of a line
     do {
-        while (!Serial.available()) ;
-    } while (Serial.read() != '\n');
+        while (!sSerial.available()) ;
+    } while (teleinfo::readChar() != '\n');
 
     // First read the label
     if (teleinfo::readWord(teleinfo::labelBuffer, TELEINFO_LABEL_BUFFER_SIZE, cks) ) {
@@ -108,8 +110,8 @@ bool teleinfo::readLine() {
             debug::logNoLine(F("teleinfo: read value "));
             debug::log(String(teleinfo::valueBuffer));
             // Read the final cks
-            while (!Serial.available()) ;
-            messageCks = Serial.read();
+            while (!sSerial.available()) ;
+            messageCks = teleinfo::readChar();
 
             // compute our own cks
             cks = (cks & 0x3F) + 0x20;
@@ -136,10 +138,10 @@ inline bool teleinfo::readWord(char* buffer, uint8_t maxBufferLength, uint8_t &c
     // Read one word
     do {
         // wait for a char to be available
-        while (!Serial.available()) ;
+        while (!sSerial.available()) ;
 
         // read one char
-        c = Serial.read();
+        c = teleinfo::readChar();
 
         // compute cks
         cks += (uint8_t)c;
@@ -162,6 +164,12 @@ inline bool teleinfo::readWord(char* buffer, uint8_t maxBufferLength, uint8_t &c
 
     // return whether the buffer overflowed or not
     return (counter != maxBufferLength);
+}
+
+char teleinfo::readChar() {
+    // Read a single char
+    // the 0x7F mask is necessary because it is not possible to begin the softwareSerial with parameters SERIAL_7E1 
+    return sSerial.read() & 0x7F;
 }
 
 bool teleinfo::record(const char* label, char* destination) {

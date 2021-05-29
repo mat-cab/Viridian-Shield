@@ -5,6 +5,9 @@
 // Inspired by arduino-teleInfo by jaysee available at 
 // https://github.com/jaysee/teleInfo
 
+// Pin allocation for the teleinfo
+static const uint8_t TELEINFO_INPUT_PIN = 8;
+
 // Size for the teleinfo buffers
 // max length for the labels
 static const uint8_t TELEINFO_LABEL_BUFFER_SIZE = 10;
@@ -66,6 +69,7 @@ class teleinfo {
     private:
         static void clearBuffer();
         static bool readLine();
+		static char readChar();
         static inline bool readWord(char* buffer, uint8_t maxBufferLength, uint8_t &cks);
         static inline bool record(const char* label, char* destination);
         static inline bool record(const char* label, uint8_t &destination);
