@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Viridian Shield"
-Date "2020-05-03"
-Rev "v01"
+Date "2021-02-26"
+Rev "v02"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -23,10 +23,6 @@ Text Label 8900 2700 0    60   ~ 0
 A2
 Text Label 8900 2800 0    60   ~ 0
 A3
-Text Label 8900 2900 0    60   ~ 0
-SDA
-Text Label 8900 3000 0    60   ~ 0
-SCL
 Text Label 10550 3000 0    60   ~ 0
 D0(RX)
 Text Label 10550 2800 0    60   ~ 0
@@ -422,23 +418,23 @@ Wire Wire Line
 $Comp
 L Isolator:SFH620A-1 U1
 U 1 1 5EC148A3
-P 3100 1900
-F 0 "U1" H 3100 2150 50  0000 C CNN
-F 1 "SFH620A-1" H 3100 1650 50  0000 C CNN
-F 2 "ViridianShield:DIP-8-4_W7.62mm_LongPads" H 3100 1500 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/83675/sfh620a.pdf" H 3050 1900 50  0001 C CNN
-	1    3100 1900
+P 2900 1950
+F 0 "U1" H 2900 2200 50  0000 C CNN
+F 1 "SFH620A-1" H 2900 1700 50  0000 C CNN
+F 2 "ViridianShield:DIP-8-4_W7.62mm_LongPads" H 2900 1550 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/83675/sfh620a.pdf" H 2850 1950 50  0001 C CNN
+	1    2900 1950
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector:Screw_Terminal_01x02 J1
 U 1 1 5EC44312
-P 1450 1700
-F 0 "J1" H 1450 1800 50  0000 C CNN
-F 1 "TELEINFO_INPUT" H 1450 1500 50  0000 C CNN
-F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 1450 1700 50  0001 C CNN
-F 3 "~" H 1450 1700 50  0001 C CNN
-	1    1450 1700
+P 1900 2000
+F 0 "J1" H 1900 2100 50  0000 C CNN
+F 1 "TELEINFO_INPUT" H 1900 1800 50  0000 C CNN
+F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 1900 2000 50  0001 C CNN
+F 3 "~" H 1900 2000 50  0001 C CNN
+	1    1900 2000
 	-1   0    0    1   
 $EndComp
 Wire Notes Line
@@ -446,97 +442,91 @@ Wire Notes Line
 $Comp
 L Device:R R1
 U 1 1 5EC5CCD5
-P 2550 2000
-F 0 "R1" V 2450 2000 50  0000 C CNN
-F 1 "4.7k" V 2650 2000 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2480 2000 50  0001 C CNN
-F 3 "~" H 2550 2000 50  0001 C CNN
-	1    2550 2000
+P 2350 2050
+F 0 "R1" V 2250 2050 50  0000 C CNN
+F 1 "1.6k" V 2450 2050 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2280 2050 50  0001 C CNN
+F 3 "~" H 2350 2050 50  0001 C CNN
+	1    2350 2050
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	3400 1800 3500 1800
+	3200 1850 3300 1850
 $Comp
 L Device:R R2
 U 1 1 5EC66EF9
-P 3500 2250
-F 0 "R2" H 3570 2296 50  0000 L CNN
-F 1 "10k" H 3570 2205 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3430 2250 50  0001 C CNN
-F 3 "~" H 3500 2250 50  0001 C CNN
-	1    3500 2250
+P 3300 2300
+F 0 "R2" H 3370 2346 50  0000 L CNN
+F 1 "10k" H 3370 2255 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3230 2300 50  0001 C CNN
+F 3 "~" H 3300 2300 50  0001 C CNN
+	1    3300 2300
 	1    0    0    -1  
 $EndComp
 $Comp
 L Transistor_FET:2N7000 Q1
 U 1 1 5EC830B9
-P 3800 2000
-F 0 "Q1" H 4004 2046 50  0000 L CNN
-F 1 "2N7000" H 4004 1955 50  0000 L CNN
-F 2 "Package_TO_SOT_THT:TO-92_Inline" H 4000 1925 50  0001 L CIN
-F 3 "https://www.fairchildsemi.com/datasheets/2N/2N7000.pdf" H 3800 2000 50  0001 L CNN
-	1    3800 2000
+P 3600 2050
+F 0 "Q1" H 3804 2096 50  0000 L CNN
+F 1 "2N7000" H 3804 2005 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Wide" H 3800 1975 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/2N/2N7000.pdf" H 3600 2050 50  0001 L CNN
+	1    3600 2050
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R3
 U 1 1 5ECA43F1
-P 3900 1550
-F 0 "R3" H 3970 1596 50  0000 L CNN
-F 1 "10k" H 3970 1505 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3830 1550 50  0001 C CNN
-F 3 "~" H 3900 1550 50  0001 C CNN
-	1    3900 1550
+P 3700 1600
+F 0 "R3" H 3770 1646 50  0000 L CNN
+F 1 "10k" H 3770 1555 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3630 1600 50  0001 C CNN
+F 3 "~" H 3700 1600 50  0001 C CNN
+	1    3700 1600
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR04
 U 1 1 5ECAA11A
-P 3900 2500
-F 0 "#PWR04" H 3900 2250 50  0001 C CNN
-F 1 "GND" H 3905 2327 50  0000 C CNN
-F 2 "" H 3900 2500 50  0001 C CNN
-F 3 "" H 3900 2500 50  0001 C CNN
-	1    3900 2500
+P 3700 2550
+F 0 "#PWR04" H 3700 2300 50  0001 C CNN
+F 1 "GND" H 3705 2377 50  0000 C CNN
+F 2 "" H 3700 2550 50  0001 C CNN
+F 3 "" H 3700 2550 50  0001 C CNN
+	1    3700 2550
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR02
 U 1 1 5ECE4F89
-P 3500 2500
-F 0 "#PWR02" H 3500 2250 50  0001 C CNN
-F 1 "GND" H 3505 2327 50  0000 C CNN
-F 2 "" H 3500 2500 50  0001 C CNN
-F 3 "" H 3500 2500 50  0001 C CNN
-	1    3500 2500
+P 3300 2550
+F 0 "#PWR02" H 3300 2300 50  0001 C CNN
+F 1 "GND" H 3305 2377 50  0000 C CNN
+F 2 "" H 3300 2550 50  0001 C CNN
+F 3 "" H 3300 2550 50  0001 C CNN
+	1    3300 2550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2800 2000 2700 2000
-Text Label 5150 4050 2    50   ~ 0
-D0(RX)
+	2600 2050 2500 2050
 Wire Wire Line
-	3400 2000 3500 2000
+	3200 2050 3300 2050
 Wire Wire Line
-	3500 2100 3500 2000
-Connection ~ 3500 2000
+	3300 2150 3300 2050
+Connection ~ 3300 2050
 Wire Wire Line
-	3500 2000 3600 2000
+	3300 2050 3400 2050
 Wire Wire Line
-	3500 2500 3500 2400
+	3300 2550 3300 2450
 Wire Wire Line
-	3900 2500 3900 2200
+	3700 2550 3700 2250
 Wire Wire Line
-	3500 1300 3500 1400
+	3300 1350 3300 1450
 Wire Wire Line
-	3900 1700 3900 1750
-Connection ~ 3900 1750
+	3700 1750 3700 1800
+Connection ~ 3700 1800
 Wire Wire Line
-	3900 1750 3900 1800
-Wire Wire Line
-	1750 1750 1750 1700
-Wire Wire Line
-	1750 1700 1650 1700
+	3700 1800 3700 1850
 $Comp
 L Switch:SW_SPST SW3
 U 1 1 5EBBF001
@@ -690,8 +680,6 @@ Wire Wire Line
 Text Label 9050 5800 0    50   ~ 0
 MANUAL_OUTPUT
 NoConn ~ 4350 5350
-Wire Notes Line
-	3100 5000 8500 5000
 $Comp
 L Switch:SW_DIP_x04 SW1
 U 1 1 5EB36A8D
@@ -720,29 +708,9 @@ Wire Wire Line
 Wire Wire Line
 	4050 4350 3550 4350
 Wire Wire Line
-	3900 1750 4550 1750
-Text Label 4550 1750 2    50   ~ 0
-TELEINFO_OUT
-Text Label 3550 4050 0    50   ~ 0
-TELEINFO_OUT
-Text Label 2050 1750 2    50   ~ 0
-EDF_IN
-Wire Wire Line
-	1750 1750 2050 1750
-Wire Wire Line
-	1650 1600 2700 1600
-Wire Wire Line
-	2700 1600 2700 1800
-Wire Wire Line
-	2700 1800 2800 1800
-Text Label 3550 4150 0    50   ~ 0
-EDF_IN
-Text Label 1900 2000 0    50   ~ 0
-TELEINFO_IN
-Wire Wire Line
-	2400 2000 1900 2000
-Text Label 5150 4150 2    50   ~ 0
-TELEINFO_IN
+	3700 1800 4350 1800
+Text Label 4350 1800 2    50   ~ 0
+D8
 Wire Wire Line
 	3550 4250 3550 4350
 Connection ~ 3550 4350
@@ -759,22 +727,18 @@ F 3 "" H 3550 4500 50  0001 C CNN
 	1    3550 4500
 	1    0    0    -1  
 $EndComp
-Text Label 5150 4350 2    50   ~ 0
-D8
-Text Label 5150 4250 2    50   ~ 0
-D9
 Text Notes 3200 3650 0    50   ~ 0
 Internal switches inputs
 Text Label 10550 1400 0    60   ~ 0
 AREF
 Text Label 10550 1600 0    60   ~ 0
-13(SCK)
+D13
 Text Label 10550 1700 0    60   ~ 0
-12(MISO)
+D12
 Text Label 10550 1800 0    60   ~ 0
-11(**/MOSI)
+D11
 Text Label 10550 1900 0    60   ~ 0
-10(**/SS)
+D10
 $Comp
 L Connector:Screw_Terminal_01x02 J4
 U 1 1 5EAEF48A
@@ -786,13 +750,8 @@ F 3 "~" H 10450 5600 50  0001 C CNN
 	1    10450 5600
 	1    0    0    -1  
 $EndComp
-NoConn ~ 10550 1900
-NoConn ~ 10550 1800
-NoConn ~ 10550 1700
-NoConn ~ 10550 1600
 NoConn ~ 10550 1400
 NoConn ~ 9350 1450
-NoConn ~ 8650 1800
 NoConn ~ 8900 2700
 NoConn ~ 8900 2800
 Wire Wire Line
@@ -835,7 +794,7 @@ Wire Wire Line
 Wire Wire Line
 	9400 1800 8650 1800
 Text Label 8650 1800 0    60   ~ 0
-Reset
+RESET
 $Comp
 L power:PWR_FLAG #FLG02
 U 1 1 5ED036CA
@@ -858,20 +817,20 @@ F 3 "~" H 6750 1900 50  0001 C CNN
 	1    6750 1900
 	-1   0    0    1   
 $EndComp
-Connection ~ 3500 1400
+Connection ~ 3300 1450
 Wire Wire Line
-	3500 1400 3500 1800
+	3300 1450 3300 1850
 Wire Wire Line
-	3500 1400 3900 1400
+	3300 1450 3700 1450
 $Comp
 L power:+5V #PWR01
 U 1 1 5ED5F02E
-P 3500 1300
-F 0 "#PWR01" H 3500 1150 50  0001 C CNN
-F 1 "+5V" H 3515 1473 50  0000 C CNN
-F 2 "" H 3500 1300 50  0001 C CNN
-F 3 "" H 3500 1300 50  0001 C CNN
-	1    3500 1300
+P 3300 1350
+F 0 "#PWR01" H 3300 1200 50  0001 C CNN
+F 1 "+5V" H 3315 1523 50  0000 C CNN
+F 2 "" H 3300 1350 50  0001 C CNN
+F 3 "" H 3300 1350 50  0001 C CNN
+	1    3300 1350
 	1    0    0    -1  
 $EndComp
 Connection ~ 7500 1700
@@ -884,6 +843,74 @@ Wire Wire Line
 	6450 1700 7000 1700
 Wire Notes Line
 	3100 6550 6950 6550
-NoConn ~ 10550 1300
-NoConn ~ 10550 1200
+NoConn ~ 8900 2900
+NoConn ~ 8900 3000
+Text Label 10550 1200 0    60   ~ 0
+SCL
+Text Label 10550 1300 0    60   ~ 0
+SDA
+Text Label 8900 2900 0    60   ~ 0
+A4
+Text Label 8900 3000 0    60   ~ 0
+A5
+Wire Wire Line
+	2200 2050 2200 2000
+Wire Wire Line
+	2200 2000 2100 2000
+Wire Wire Line
+	2200 1850 2200 1900
+Wire Wire Line
+	2200 1900 2100 1900
+Wire Wire Line
+	2200 1850 2600 1850
+Wire Wire Line
+	3550 4150 3550 4250
+Connection ~ 3550 4250
+Wire Wire Line
+	3550 4050 3550 4150
+Connection ~ 3550 4150
+Text Label 5150 4350 2    50   ~ 0
+D10
+Text Label 5150 4250 2    50   ~ 0
+D11
+Text Label 5150 4150 2    50   ~ 0
+D12
+Text Label 5150 4050 2    50   ~ 0
+D13
+NoConn ~ 10550 2000
+$Comp
+L Switch:SW_Push SW5
+U 1 1 6042F464
+P 1700 4150
+F 0 "SW5" V 1746 4102 50  0000 R CNN
+F 1 "RESET_SWITCH" V 1655 4102 50  0000 R CNN
+F 2 "Button_Switch_THT:SW_PUSH_6mm" H 1700 4350 50  0001 C CNN
+F 3 "~" H 1700 4350 50  0001 C CNN
+	1    1700 4150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR0101
+U 1 1 60430962
+P 1700 4400
+F 0 "#PWR0101" H 1700 4150 50  0001 C CNN
+F 1 "GND" H 1705 4227 50  0000 C CNN
+F 2 "" H 1700 4400 50  0001 C CNN
+F 3 "" H 1700 4400 50  0001 C CNN
+	1    1700 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 4400 1700 4350
+Wire Wire Line
+	1700 3950 1700 3850
+Wire Wire Line
+	1700 3850 2200 3850
+Text Label 2200 3850 2    50   ~ 0
+RESET
+Text Notes 600  3650 0    50   ~ 0
+Reset switch
+Wire Notes Line
+	500  5000 8500 5000
+NoConn ~ 10550 3000
 $EndSCHEMATC
