@@ -4,3 +4,6 @@
 .vscode/launch.json
 .vscode/ipch
 kicad/fp-info-cache
+kicad/Gerbers
+kicad/*-bak
+kicad/*-cache.*
