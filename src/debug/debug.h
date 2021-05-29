@@ -9,4 +9,5 @@ class debug {
     public:
         static void initialize();
         static void log(const String message);
+        static void logNoLine(const String message);
 };

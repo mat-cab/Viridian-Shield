@@ -29,7 +29,9 @@ void viridian::setChargingCurrent(const double maxAmps) {
         // if value is less than minimum, just apply 0
         newChargingCurrent = 0.0;
         // also log a message
-        debug::log("viridian: Not charging - new charging current is less than minimum of "+String(VIRIDIAN_MIN_RANGE_AMPS)+" Amps");
+        debug::logNoLine(F("viridian: Not charging - new charging current is less than minimum of "));
+        debug::logNoLine(String(VIRIDIAN_MIN_RANGE_AMPS));
+        debug::log(F(" Amps"));
     } else {
         // this is an acceptable value
         newChargingCurrent = maxAmps;
@@ -67,7 +69,7 @@ boolean viridian::currentChanged() {
 void viridian::sendToCar() {
     // special case to stop charging
     if (viridian::_chargingCurrent == 0.0) {
-        debug::log("viridian: Sending stop command to Viridian");
+        debug::log(F("viridian: Sending stop command to Viridian"));
 
         // just send 0 to the DAC
         dac_MCP4725::write(0);
@@ -81,7 +83,12 @@ void viridian::sendToCar() {
         // value for the DAC
         uint16_t dacValue = (ICV - VIRIDIAN_DAC_MIN_V) / (VIRIDIAN_DAC_MAX_V - VIRIDIAN_DAC_MIN_V) * VIRIDIAN_DAC_MAX_Q;
 
-        debug::log("viridian: Sending charging command to Viridian at "+String(viridian::_chargingCurrent)+"A, IC equivalent voltage: "+String(ICV)+"V, DAC Value: "+String(dacValue));
+        debug::logNoLine(F("viridian: Sending charging command to Viridian at "));
+        debug::logNoLine(String(viridian::_chargingCurrent));
+        debug::logNoLine(F("A, IC equivalent voltage: "));
+        debug::logNoLine(String(ICV));
+        debug::logNoLine(F("V, DAC Value: "));
+        debug::log(String(dacValue));
 
         // Send the value to the DAC
         dac_MCP4725::write(dacValue);        

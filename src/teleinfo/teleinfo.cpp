@@ -25,13 +25,13 @@ teleinfo_t teleinfo::read() {
     // Begin by flushing the serial interface
     while (Serial.available())
         Serial.read();
-    debug::log("teleinfo: Serial flushed");
+    debug::log(F("teleinfo: Serial flushed"));
 
     // Find the end of the ongoing teleinfo frame
     do {            
         teleinfo::readLine();
     } while (strcmp(teleinfo::labelBuffer, "MOTDETAT") != 0);
-    debug::log("teleinfo: found end of teleinfo frame");
+    debug::log(F("teleinfo: found end of teleinfo frame"));
 
     // we are at the start of a frame
     do {
@@ -69,9 +69,12 @@ teleinfo_t teleinfo::read() {
             if (record("MOTDETAT", result.MOTDETAT)) continue;
 
             // no match: probably an unknow label ?
-            debug::log("teleinfo: Unknown label found - label: "+String(teleinfo::labelBuffer)+" - value: "+String(teleinfo::valueBuffer));
+            debug::logNoLine(F("teleinfo: Unknown label found - label: "));
+            debug::logNoLine(String(teleinfo::labelBuffer));
+            debug::logNoLine(F(" - value: "));
+            debug::log(String(teleinfo::valueBuffer));
         } else {
-            debug::log("teleinfo: read failed");
+            debug::log(F("teleinfo: read failed"));
         }
     } while (strcmp(teleinfo::labelBuffer, "MOTDETAT") != 0);
 
@@ -98,10 +101,12 @@ bool teleinfo::readLine() {
 
     // First read the label
     if (teleinfo::readWord(teleinfo::labelBuffer, TELEINFO_LABEL_BUFFER_SIZE, cks) ) {
-        debug::log("teleinfo: read label "+String(teleinfo::labelBuffer));
+        debug::logNoLine(F("teleinfo: read label "));
+        debug::log(String(teleinfo::labelBuffer));
         // Next read the value
         if (teleinfo::readWord(teleinfo::valueBuffer, TELEINFO_VALUE_BUFFER_SIZE, cks)) {
-            debug::log("teleinfo: read value "+String(teleinfo::valueBuffer));
+            debug::logNoLine(F("teleinfo: read value "));
+            debug::log(String(teleinfo::valueBuffer));
             // Read the final cks
             while (!Serial.available()) ;
             messageCks = Serial.read();
@@ -113,11 +118,11 @@ bool teleinfo::readLine() {
             return (cks==messageCks);
         } else {
             // log an issue
-            debug::log("teleinfo: error while reading a value");
+            debug::log(F("teleinfo: error while reading a value"));
         }
     } else {
         // log an issue
-        debug::log("teleinfo: error while reading a label");
+        debug::log(F("teleinfo: error while reading a label"));
     }
 
     // return there was an issue
@@ -147,8 +152,9 @@ inline bool teleinfo::readWord(char* buffer, uint8_t maxBufferLength, uint8_t &c
 
     if (c != ' ' && counter == maxBufferLength) {
         // check for buffer overflow
-        debug::log("teleinfo: buffer overflow !!! buffer cleared");
-        debug::log("teleinfo: buffer was "+String(buffer));
+        debug::log(F("teleinfo: buffer overflow !!! buffer cleared"));
+        debug::logNoLine(F("teleinfo: buffer was "));
+        debug::log(String(buffer));
 
         // clear the buffer
         teleinfo::clearBuffer();

@@ -30,3 +30,10 @@ void debug::log(const String message) {
     Serial3.println(message);
     #endif
 }
+
+void debug::logNoLine(const String message) {
+    // debug generally only available for MEGA on Serial1
+    #ifdef ARDUINO_AVR_MEGA2560
+    Serial3.print(message);
+    #endif
+}

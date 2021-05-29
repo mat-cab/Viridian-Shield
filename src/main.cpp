@@ -35,7 +35,7 @@ void setup() {
   debug::initialize();
 
   // start things up
-  debug::log("main: Arduino starting");
+  debug::log(F("main: Arduino starting"));
 
   // initialize inputs
   inputs::initialize();
@@ -50,7 +50,7 @@ void setup() {
   teleinfo::initialize();
 
   // debug message to know we finished setup
-  debug::log("main: Setup finished");
+  debug::log(F("main: Setup finished"));
 
   // just wait a few seconds before going into the loop, in case we just had an overcurrent protection
   delay(MAIN_END_SETUP_WAIT);
@@ -66,7 +66,7 @@ void loop() {
   
   if (inputs::readOption(INPUTS_OPTION_CHARGING_CAR)) {
     // There is no car charging
-    debug::log("main: No car is charging");
+    debug::log(F("main: No car is charging"));
 
     // send the appropriate charging current
     viridian::setChargingCurrent(MAIN_CURRENT_NO_CAR_CHARGING);
@@ -76,25 +76,27 @@ void loop() {
   } else {
     if (chargeStarted == false) {
       // log
-      debug::log("main: Car just started charging, waiting for charge to start");
+      debug::log(F("main: Car just started charging, waiting for charge to start"));
 
       // let the car start charging
       delay(MAIN_INITIAL_CHARGE_DELAY);
     }
 
     // Read the teleInfo
-    debug::log("main: Reading teleInfo");
-      teleinfo = teleinfo::read();
+    debug::log(F("main: Reading teleInfo"));
+    teleinfo = teleinfo::read();
 
     // log the teleinfo data
-    debug::log("main: Teleinfo ISOUSC: "+String(teleinfo.ISOUSC));
-    debug::log("main: Teleinfo IINST: "+String(teleinfo.IINST));
+    debug::logNoLine(F("main: Teleinfo ISOUSC: "));
+    debug::log(String(teleinfo.ISOUSC));
+    debug::logNoLine(F("main: Teleinfo IINST: "));
+    debug::log(String(teleinfo.IINST));
 
     // If timer is finished or ADPS is received
     if (timer::timerAllows() || teleinfo.ADPS > 0 || chargeStarted == false) {
       if ( chargeStarted == false ) {
         // log
-        debug::log("main: Now adapting charge current for first charge");
+        debug::log(F("main: Now adapting charge current for first charge"));
 
         // reset the timer
         timer::resetTimer();
@@ -103,10 +105,10 @@ void loop() {
         chargeStarted = true;
       } else if (teleinfo.ADPS > 0 ) {
         // log to debug
-        debug::log("main: ADPS received, adapting charge current");
+        debug::log(F("main: ADPS received, adapting charge current"));
       } else {
         // log to debug
-        debug::log("main: Nominal timer activation");
+        debug::log(F("main: Nominal timer activation"));
       }
       // get the current margin
       // default to 1A + option for the 2A additional margin
@@ -124,7 +126,9 @@ void loop() {
       double availableCurrent = viridian::getChargingCurrent() + (teleinfo.ISOUSC * iSOUSCMultplier - teleinfo.IINST) - currentMargin;
 
       // additional debug message to understand what is going on
-      debug::log("main: available current is now "+String(availableCurrent)+ " Amps");
+      debug::logNoLine(F("main: available current is now "));
+      debug::logNoLine(String(availableCurrent));
+      debug::log(F(" Amps"));
 
       // if we were not charging before, start charging (if it is more than the minimum in viridian module)
       if (viridian::getChargingCurrent() == 0.0) {
@@ -137,7 +141,7 @@ void loop() {
         // check that the availableCurrent is at least one Amp different
         if ((-1.0 < (availableCurrent - viridian::getChargingCurrent())) && ((availableCurrent - viridian::getChargingCurrent()) < 1.0)) {
           // if not, log a message
-          debug::log("main: Change of charging current is less than one amp. Not changing.");
+          debug::log(F("main: Change of charging current is less than one amp. Not changing."));
           } else {
           // compute the percentage change
           double percentageChange = availableCurrent / viridian::getChargingCurrent();
@@ -151,13 +155,15 @@ void loop() {
             delay(MAIN_CURRENT_CHANGE_DURATION);
           } else {
             // log to debug that we did not ask for an update of the charging current
-            debug::log("main: Change of charging current is not important enough (already charging at "+String(viridian::getChargingCurrent())+" Amps)");
+            debug::logNoLine(F("main: Change of charging current is not important enough (already charging at "));
+            debug::logNoLine(String(viridian::getChargingCurrent()));
+            debug::log(F(" Amps)"));
           }
         }
       }
     } else {
       // simple log message
-      debug::log("main: waiting for appropriate time to change charge");
+      debug::log(F("main: waiting for appropriate time to change charge"));
     }
   }
 

@@ -26,6 +26,7 @@ void dac_MCP4725::write(int value) {
     // end the transmission
     byte endTransmission = Wire.endTransmission(); 
     if (endTransmission!= 0) {
-        debug::log("dac_MCP4725: Error during I2C transmission - "+String(endTransmission));
+        debug::logNoLine(F("dac_MCP4725: Error during I2C transmission - "));
+        debug::log(String(endTransmission));
     }
 }
