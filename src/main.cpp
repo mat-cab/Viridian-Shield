@@ -106,7 +106,7 @@ void loop() {
 
         // Record that the charge has started
         chargeStarted = true;
-      } else if (teleinfo.ADPS > 0 ) {
+      } else if (teleinfo.ADPS > 0) {
         // log to debug
         debug::log(F("main: ADPS received, adapting charge current"));
       } else {
@@ -120,7 +120,7 @@ void loop() {
       // ISOUSC multiplier
       double iSOUSCMultplier = 1.0;
 
-      // If option is set, add 20 margin on ISOUSC
+      // If option is set, add 20% margin on ISOUSC
       if (inputs::readOption(INPUTS_OPTION_GREATER_ISOUSC)) {
         iSOUSCMultplier += 0.2;
       }
