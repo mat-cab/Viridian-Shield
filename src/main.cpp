@@ -49,11 +49,14 @@ void setup() {
   // initialize the teleinfo interface
   teleinfo::initialize();
 
-  // debug message to know we finished setup
-  debug::log(F("main: Setup finished"));
+  // debug message to know that initialization is finished
+  debug::log(F("main: Initialization finished. Waiting before starting..."));
 
   // just wait a few seconds before going into the loop, in case we just had an overcurrent protection
   delay(MAIN_END_SETUP_WAIT);
+
+  // debug message to know we finished setup
+  debug::log(F("main: Setup finished"));
 }
 
 void loop() {
