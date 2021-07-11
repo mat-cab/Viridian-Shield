@@ -64,6 +64,8 @@ void loop() {
 
   static boolean chargeStarted;
 
+  boolean adaptCurrent;
+
   // reset the current changed info for the viridian
   viridian::resetChange();
   
@@ -95,8 +97,20 @@ void loop() {
     debug::logNoLine(F("main: Teleinfo IINST: "));
     debug::log(String(teleinfo.IINST));
 
-    // If timer is finished or ADPS is received
-    if (timer::timerAllows() || teleinfo.ADPS > 0 || chargeStarted == false) {
+    // check if the teleinfo data is empty
+    if (teleinfo.ISOUSC == 0) {
+      // log
+      debug::log(F("main: ISOUSC is 0, teleinfo most likely failed to read data"));
+      debug::log(F("main: current will not be adapted"));
+    }
+
+    // check if adapting current is necessary
+    // If ISOUSC is 0, then teleinfo read failed, so do not try to adapt current
+    // Otherwise, adapt if on timer, or ADPS triggered, or we just started charging the car
+    adaptCurrent = teleinfo.ISOUSC > 0 && (timer::timerAllows() || teleinfo.ADPS > 0 || chargeStarted == false);
+
+    // If necessary to adaptCurrent 
+    if (adaptCurrent) {
       if ( chargeStarted == false ) {
         // log
         debug::log(F("main: Now adapting charge current for first charge"));

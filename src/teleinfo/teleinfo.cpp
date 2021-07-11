@@ -30,8 +30,15 @@ teleinfo_t teleinfo::read() {
     debug::log(F("teleinfo: sSerial.flushed"));
 
     // Find the end of the ongoing teleinfo frame
-    do {            
-        teleinfo::readLine();
+    do {
+        // try to read a line            
+        if (!teleinfo::readLine()) {
+            // if for some reason it failed, log so
+            debug::log(F("teleinfo: impossible to synchronize with start of teleinfo frame"));
+
+            // and return the (empty) teleinfo data
+            return result;
+        }
     } while (strcmp(teleinfo::labelBuffer, "MOTDETAT") != 0);
     debug::log(F("teleinfo: found end of teleinfo frame"));
 
@@ -92,13 +99,26 @@ void teleinfo::clearBuffer() {
 bool teleinfo::readLine() {
     uint8_t cks = 32;
     uint8_t messageCks;
+    uint32_t timeoutStart;
 
     // clear the buffer
     teleinfo::clearBuffer();
 
+    // initiate the timeout counter
+    timeoutStart = millis();
+
     // First make sure that we are at the end of a line
     do {
-        while (!sSerial.available()) ;
+        while (!sSerial.available() && (millis() - timeoutStart) < TELEINFO_TIMEOUT) ;
+
+        // check if timeout is reached
+        if (millis() - timeoutStart >= TELEINFO_TIMEOUT) {
+            // debug that the read failed in timeout
+            debug::log(F("teleinfo: Timeout on teleinfo read"));
+
+            // return it failed
+            return false;
+        }
     } while (teleinfo::readChar() != '\n');
 
     // First read the label

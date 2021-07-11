@@ -14,6 +14,10 @@ static const uint8_t TELEINFO_LABEL_BUFFER_SIZE = 10;
 // max length for the values
 static const uint8_t TELEINFO_VALUE_BUFFER_SIZE = 16;
 
+// timeout for teleinfo read (in ms)
+// set at one day in nominal case, because it is safer to receive the teleinfo data
+static const uint32_t TELEINFO_TIMEOUT = 86400000;
+
 typedef struct teleinfo_t teleinfo_t;
 struct teleinfo_t {
 	char ADCO[12]; 
