@@ -6,7 +6,7 @@
 // https://github.com/jaysee/teleInfo
 
 // Pin allocation for the teleinfo
-static const uint8_t TELEINFO_INPUT_PIN = 8;
+static const uint8_t TELEINFO_INPUT_PIN = 9;
 
 // Size for the teleinfo buffers
 // max length for the labels
